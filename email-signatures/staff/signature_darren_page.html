@@ -12,23 +12,15 @@
   :root { color-scheme: light only; supported-color-schemes: light only; }
   @media screen and (max-width: 480px) {
     .sig-wrapper { width: 100% !important; }
-    .tagline { font-size: 14px !important; line-height: 16px !important; }
-    .angle-icon { width: 28px !important; height: 28px !important; }
     .q-col { width: 25% !important; padding: 10px 10px 10px 0 !important; }
     .q-mark { max-width: 80px !important; }
-    .footer-text { font-size: 14px !important; line-height: 20px !important; }
-    .tag-pad { padding: 10px 0 0 10px !important; }
-    .foot-pad { padding: 0 0 10px 10px !important; }
+    .banner-pad { padding: 12px 0 12px 12px !important; }
     .contact-pad { padding: 0 0 8px 10px !important; }
   }
   /* Outlook iOS dark mode — preserve intended colours */
   [data-ogsc] .sig-banner { background-color: #2D2D27 !important; }
   [data-ogsc] .sig-text-dark { color: #2D2D27 !important; }
   [data-ogsc] .sig-text-muted { color: #8C8C8C !important; }
-  [data-ogsc] .sig-text-white { color: #FFFFFF !important; }
-  [data-ogsc] .sig-text-fade38 { color: #7D7D79 !important; }
-  [data-ogsc] .sig-text-fade50 { color: #969693 !important; }
-  [data-ogsc] .sig-text-fade25 { color: #62625D !important; }
 </style>
 <!--<![endif]-->
 <!--[if mso]>
@@ -77,52 +69,16 @@ table { border-collapse: collapse; }
 <!-- Email Signature -->
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="sig-wrapper sig-banner" style="width:100%;max-width:1280px;background-color:#2D2D27;">
   <tr>
-    <td style="padding:0;">
+    <!-- LHS: footer graphic (replaces tagline + footer text) -->
+    <td class="banner-pad" style="padding:16px 0 16px 12px;vertical-align:middle;" valign="middle">
+      <a href="https://wearequarry.com" style="text-decoration:none;display:block;">
+        <img src="https://assets.wearequarry.com/email-signatures/img/footer-graphic.png" alt="Buildings that blend purpose and place. Quarry Architects | Lytle Associates since 1987" width="640" class="banner-graphic" style="display:block;width:100%;max-width:1159px;height:auto;border:0;" />
+      </a>
+    </td>
 
-      <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <!-- Row 1: tagline + Q mark (rowspan) -->
-        <tr>
-          <td class="tag-pad" style="padding:16px 0 0 12px;vertical-align:top;" valign="top">
-            <table cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td class="tagline sig-text-white" style="font-family:Helvetica,Arial,sans-serif;font-size:18px;line-height:19px;color:#FFFFFF;font-weight:500;letter-spacing:0.02em;padding:0;">
-                  <a href="https://wearequarry.com" style="color:#FFFFFF;text-decoration:none;">Buildings that blend</a>
-                </td>
-                <td rowspan="2" style="padding:2px 0 0 8px;vertical-align:top;" valign="top">
-                  <a href="https://wearequarry.com" style="text-decoration:none;"><img src="https://assets.wearequarry.com/email-signatures/img/angle.png" alt="" width="32" height="32" class="angle-icon" style="display:block;width:32px;height:32px;border:0;" /></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="tagline sig-text-fade38" style="font-family:Helvetica,Arial,sans-serif;font-size:18px;line-height:19px;color:#7D7D79;font-weight:500;letter-spacing:0.02em;padding:0;">
-                  <a href="https://wearequarry.com" style="color:#7D7D79;text-decoration:none;">purpose and place.</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-
-          <!-- Q mark spans both rows -->
-          <td rowspan="2" class="q-col" style="vertical-align:top;text-align:right;padding:16px 16px 16px 0;width:30%;" width="30%" valign="top" align="right">
-            <a href="https://wearequarry.com" style="text-decoration:none;"><img src="https://assets.wearequarry.com/email-signatures/img/q.png" alt="Quarry Architects" width="120" class="q-mark" style="display:block;margin-left:auto;width:100%;max-width:120px;height:auto;border:0;" /></a>
-          </td>
-        </tr>
-
-        <!-- Row 2: footer (bottom-aligned) -->
-        <tr>
-          <td class="foot-pad" style="padding:0 0 16px 12px;vertical-align:bottom;" valign="bottom">
-            <table cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td class="footer-text sig-text-fade50" style="vertical-align:bottom;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:22px;color:#969693;font-weight:400;letter-spacing:0.04em;padding:0;" valign="bottom">
-                  <a href="https://wearequarry.com" style="color:#969693;text-decoration:none;">
-                    <span style="white-space:nowrap;"><img src="https://assets.wearequarry.com/email-signatures/img/quarry.png" alt="Quarry" width="58" class="quarry-logo" style="display:inline-block;width:58px;max-width:58px;height:auto;vertical-align:baseline;border:0;" /> Architects <span class="sig-text-fade25" style="color:#62625D;">|</span></span>
-                    <span style="white-space:nowrap;">Lytle Associates since 1987</span>
-                  </a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-
+    <!-- RHS: Q mark -->
+    <td class="q-col" style="vertical-align:middle;text-align:right;padding:16px 16px 16px 0;width:30%;" width="30%" valign="middle" align="right">
+      <a href="https://wearequarry.com" style="text-decoration:none;"><img src="https://assets.wearequarry.com/email-signatures/img/q.png" alt="Quarry Architects" width="120" class="q-mark" style="display:block;margin-left:auto;width:100%;max-width:120px;height:auto;border:0;" /></a>
     </td>
   </tr>
 </table>
