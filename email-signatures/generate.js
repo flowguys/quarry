@@ -12,7 +12,7 @@ const OFFICE_TEL = '01483301661';
 
 const MOBILE_ROW = (telDigits, display) => `        <tr>
           <td class="sig-text-dark" style="font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;color:#2D2D27;font-weight:400;letter-spacing:0.02em;padding:0;">
-            <a href="tel:${telDigits}" style="color:#2D2D27;text-decoration:none;">${display}</a>
+            <a href="tel:${telDigits}" style="color:#2D2D27;text-decoration:none;"><span style="color:#2D2D27;text-decoration:none;">${display}</span></a>
           </td>
         </tr>
 `;
