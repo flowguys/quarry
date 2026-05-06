@@ -1,0 +1,29 @@
+{
+	"name": "quarry-reveal",
+	"version": "1.0.0",
+	"description": "Quarry — From Foundations to Form. 9:16 brand reveal animation.",
+	"repository": {},
+	"license": "UNLICENSED",
+	"private": true,
+	"dependencies": {
+		"@remotion/cli": "4.0.411",
+		"react": "19.2.3",
+		"react-dom": "19.2.3",
+		"remotion": "4.0.411"
+	},
+	"devDependencies": {
+		"@remotion/eslint-config-flat": "4.0.411",
+		"@types/react": "19.2.7",
+		"@types/web": "0.0.166",
+		"eslint": "9.19.0",
+		"prettier": "3.6.0",
+		"typescript": "5.9.3"
+	},
+	"scripts": {
+		"dev": "remotion studio",
+		"build": "remotion render QuarryReveal out/quarry-reveal.mp4",
+		"build:hq": "remotion render QuarryReveal out/quarry-reveal.mp4 --crf=18 --pixel-format=yuv420p",
+		"upgrade": "remotion upgrade",
+		"lint": "eslint src && tsc"
+	}
+}

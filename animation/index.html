@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Quarry — From Foundations to Form</title>
+<meta name="viewport" content="width=1080,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="stage" class="stage">
+    <!-- Layer 0: blueprint grid -->
+    <svg class="layer grid" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="bp-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E45A1B" stroke-width="0.6" />
+        </pattern>
+        <pattern id="bp-grid-fine" width="12" height="12" patternUnits="userSpaceOnUse">
+          <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#E45A1B" stroke-width="0.25" />
+        </pattern>
+      </defs>
+      <rect class="grid-fill grid-fill-fine" width="1080" height="1920" fill="url(#bp-grid-fine)" />
+      <rect class="grid-fill grid-fill-coarse" width="1080" height="1920" fill="url(#bp-grid)" />
+    </svg>
+
+    <!-- Layer 1: legacy text -->
+    <div class="layer legacy" id="legacy">
+      <div class="legacy-mark">EST. 1987</div>
+      <div class="legacy-name">
+        <span class="char" data-i="0">L</span><span class="char" data-i="1">y</span><span class="char" data-i="2">t</span><span class="char" data-i="3">l</span><span class="char" data-i="4">e</span><span class="char">&nbsp;</span><span class="char" data-i="5">A</span><span class="char" data-i="6">s</span><span class="char" data-i="7">s</span><span class="char" data-i="8">o</span><span class="char" data-i="9">c</span><span class="char" data-i="10">i</span><span class="char" data-i="11">a</span><span class="char" data-i="12">t</span><span class="char" data-i="13">e</span><span class="char" data-i="14">s</span>
+      </div>
+      <div class="legacy-tagline">Architecture &amp; Planning</div>
+    </div>
+
+    <!-- Layer 2: year counter -->
+    <div class="layer counter-wrap" id="counter">
+      <div class="counter-label">YEAR</div>
+      <div class="counter-value" id="counter-value">1987</div>
+      <div class="counter-rule"></div>
+    </div>
+
+    <!-- Layer 3: CAD construction lines (drawn during 2-5s) -->
+    <svg class="layer cad" viewBox="0 0 1080 1920" id="cad" aria-hidden="true">
+      <g id="cad-lines" stroke="#E45A1B" stroke-width="1.5" fill="none" stroke-linecap="round"></g>
+    </svg>
+
+    <!-- Layer 4: the Q.
+         The Q artwork lives as a raster (q.png). The animation treats it as
+         three "stages" (wireframe edge → glass tint → solid) by stacking
+         filtered copies and crossfading.
+         Position: 520×620 box, centered at (540, 960).
+    -->
+    <svg class="layer q" id="q-svg" viewBox="0 0 1080 1920" aria-hidden="true">
+      <defs>
+        <linearGradient id="q-spec" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0">
+          <stop offset="0%"  stop-color="#ffffff" stop-opacity="0" />
+          <stop offset="42%" stop-color="#ffffff" stop-opacity="0" />
+          <stop offset="50%" stop-color="#ffffff" stop-opacity="0.95" />
+          <stop offset="58%" stop-color="#ffffff" stop-opacity="0" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- Edge detection filter for the wireframe stage -->
+        <filter id="q-edge" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+          <feMorphology in="SourceGraphic" operator="dilate" radius="1" result="d" />
+          <feMorphology in="SourceGraphic" operator="erode"  radius="1" result="e" />
+          <feComposite in="d" in2="e" operator="out" result="edge" />
+          <feColorMatrix in="edge" type="matrix"
+            values="0 0 0 0 0.894
+                    0 0 0 0 0.353
+                    0 0 0 0 0.106
+                    0 0 0 1 0" />
+        </filter>
+
+        <!-- Glass: blurred, slightly brighter, alpha reduced for translucency -->
+        <filter id="q-glass-fx" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="b" />
+          <feColorMatrix in="b" type="matrix"
+            values="1.15 0    0    0  0.05
+                    0    1.15 0    0  0.05
+                    0    0    1.15 0  0.05
+                    0    0    0    0.55 0" />
+        </filter>
+
+        <!-- Mask = the Q's alpha channel, used to clip the spec sweep to the silhouette -->
+        <mask id="q-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" mask-type="alpha">
+          <image href="q.png" x="280" y="650" width="520" height="620" preserveAspectRatio="xMidYMid meet" />
+        </mask>
+      </defs>
+
+      <g id="q-group" transform="translate(0 0) scale(1)" style="transform-origin: 540px 960px;">
+        <!-- Wireframe stage: edge-only render -->
+        <image id="q-wire"  href="q.png" x="280" y="650" width="520" height="620"
+               preserveAspectRatio="xMidYMid meet" filter="url(#q-edge)" />
+        <!-- Glass stage: blurred + cool tint -->
+        <image id="q-glass" href="q.png" x="280" y="650" width="520" height="620"
+               preserveAspectRatio="xMidYMid meet" filter="url(#q-glass-fx)" />
+        <!-- Solid stage: the canonical orange Q -->
+        <image id="q-solid" href="q.png" x="280" y="650" width="520" height="620"
+               preserveAspectRatio="xMidYMid meet" />
+        <!-- Specular sweep across the Q silhouette -->
+        <rect id="q-spec-rect" x="-300" y="640" width="200" height="640"
+              fill="url(#q-spec)" mask="url(#q-mask)" />
+      </g>
+    </svg>
+
+    <!-- Layer 5: final wordmark -->
+    <div class="layer wordmark" id="wordmark">
+      <div class="word-quarry">QUARRY</div>
+      <div class="word-arch">ARCHITECTS</div>
+      <div class="word-formerly">Formerly Lytle Associates</div>
+    </div>
+
+    <!-- Layer 6: vignette + bloom flash -->
+    <div class="layer vignette" aria-hidden="true"></div>
+    <div class="layer bloom" id="bloom" aria-hidden="true"></div>
+
+    <!-- Layer 7: bottom safe-zone marker (debug, hidden in render) -->
+    <div class="safe-zones" aria-hidden="true">
+      <div class="safe top"></div>
+      <div class="safe bottom"></div>
+    </div>
+  </main>
+
+  <!-- HUD: only visible in interactive preview, hidden during headless capture -->
+  <aside class="hud" id="hud">
+    <div class="hud-row">
+      <button id="play">Play</button>
+      <button id="pause">Pause</button>
+      <button id="restart">Restart</button>
+      <span id="time-readout">0.00 / 8.00s</span>
+    </div>
+    <input id="scrub" type="range" min="0" max="8" step="0.0167" value="0" />
+    <div class="hud-row hud-meta">
+      <label><input type="checkbox" id="toggle-safe" /> safe zones</label>
+      <label><input type="checkbox" id="toggle-grid-debug" /> grid always on</label>
+    </div>
+  </aside>
+
+  <script type="module" src="timeline.js"></script>
+</body>
+</html>

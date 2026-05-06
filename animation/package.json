@@ -1,0 +1,17 @@
+{
+  "name": "quarry-animation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Quarry — From Foundations to Form. 9:16 brand reveal animation.",
+  "scripts": {
+    "preview": "node serve.js",
+    "render": "node render.js",
+    "render:fast": "node render.js --fps 30 --quality 23",
+    "render:hq":   "node render.js --fps 30 --quality 18"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "puppeteer": "^23.0.0"
+  }
+}

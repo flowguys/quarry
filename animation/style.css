@@ -1,0 +1,319 @@
+/* ============================================================
+   Quarry — From Foundations to Form
+   9:16 master canvas: 1080 x 1920
+   ============================================================ */
+
+:root {
+  --bg: #0E0E10;
+  --ink: #F4F1EC;
+  --ink-dim: rgba(244, 241, 236, 0.55);
+  --orange: #E45A1B;
+  --orange-bright: #F47A35;
+  --orange-deep: #C44510;
+  --canvas-w: 1080px;
+  --canvas-h: 1920px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #050507;
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ----- Stage: the 9:16 canvas ----- */
+.stage {
+  position: relative;
+  width: var(--canvas-w);
+  height: var(--canvas-h);
+  margin: 0 auto;
+  background: var(--bg);
+  overflow: hidden;
+  /* radial fall-off from center to deepen the space */
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 45%, #14141a 0%, var(--bg) 60%, #08080a 100%);
+  /* let the page render at any zoom by anchoring origin */
+  transform-origin: top center;
+}
+
+/* When viewport is smaller than 1080x1920, scale down proportionally for preview */
+@media (max-width: 1080px), (max-height: 1920px) {
+  body.preview .stage {
+    transform: scale(var(--preview-scale, 1));
+  }
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Layer 0: Blueprint grid
+   ============================================================ */
+.grid { opacity: 0; mix-blend-mode: screen; }
+.grid-fill-fine  { opacity: 0.55; }
+.grid-fill-coarse { opacity: 1; }
+
+/* ============================================================
+   Layer 1: Legacy text (Lytle Associates / EST. 1987)
+   Positioned in the upper third for vertical balance.
+   ============================================================ */
+.legacy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 460px;
+  text-align: center;
+  opacity: 0;
+}
+
+.legacy-mark {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  letter-spacing: 0.42em;
+  color: var(--orange);
+  margin-bottom: 38px;
+  font-weight: 500;
+  /* small underline-divider with 1px hairlines */
+  position: relative;
+  padding: 0 28px;
+}
+.legacy-mark::before,
+.legacy-mark::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 1px;
+  background: var(--orange);
+  opacity: 0.6;
+}
+.legacy-mark::before { right: 100%; }
+.legacy-mark::after  { left: 100%; }
+
+.legacy-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 78px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+}
+.legacy-name .char {
+  display: inline-block;
+  transform: translateY(0) rotate(0deg);
+  opacity: 1;
+  will-change: transform, opacity;
+}
+
+.legacy-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  letter-spacing: 0.32em;
+  color: var(--ink-dim);
+  margin-top: 32px;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Layer 2: Year counter
+   Centered, hero-scale.
+   ============================================================ */
+.counter-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+}
+
+.counter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  letter-spacing: 0.5em;
+  color: var(--orange);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+}
+
+.counter-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 300;
+  font-size: 280px;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  /* faint orange glow on the counter as it climbs */
+  text-shadow: 0 0 0px rgba(228, 90, 27, 0);
+  transition: text-shadow 80ms ease-out;
+}
+
+.counter-rule {
+  width: 0;
+  height: 1.5px;
+  background: var(--orange);
+  margin-top: 36px;
+  transition: width 200ms ease-out;
+}
+
+/* ============================================================
+   Layer 3: CAD construction lines
+   ============================================================ */
+.cad { opacity: 1; mix-blend-mode: screen; }
+.cad #cad-lines path,
+.cad #cad-lines line {
+  stroke-dasharray: var(--len, 600);
+  stroke-dashoffset: var(--len, 600);
+  opacity: 0.85;
+}
+
+/* ============================================================
+   Layer 4: The Q
+   ============================================================ */
+.q { opacity: 1; }
+#q-group {
+  transform-origin: 540px 960px;
+  will-change: transform;
+}
+#q-wire   { opacity: 0; }
+#q-glass  { opacity: 0; }
+#q-solid  { opacity: 0; }
+#q-spec-rect { opacity: 0; }
+
+/* ============================================================
+   Layer 5: Final wordmark (QUARRY / Architects / Formerly...)
+   Positioned in the lower third.
+   ============================================================ */
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 240px;
+  text-align: center;
+  opacity: 1;
+}
+
+.word-quarry {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 132px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(60px);
+  will-change: transform, opacity;
+}
+
+.word-arch {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 0.6em;
+  color: var(--orange);
+  margin-top: 22px;
+  padding-left: 0.6em; /* compensate trailing letter-spacing */
+  opacity: 0;
+  transform: translateY(40px);
+  will-change: transform, opacity;
+}
+
+.word-formerly {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  color: var(--ink-dim);
+  margin-top: 56px;
+  opacity: 0;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Layer 6: Vignette + bloom flash
+   ============================================================ */
+.vignette {
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.bloom {
+  background: radial-gradient(ellipse 60% 35% at 50% 49%, rgba(244, 122, 53, 0.7), transparent 70%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  filter: blur(28px);
+}
+
+/* ============================================================
+   Safe zone overlays (debug only)
+   ============================================================ */
+.safe-zones { display: none; }
+body.show-safe .safe-zones { display: block; }
+.safe {
+  position: absolute;
+  left: 0; right: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border-top: 1px dashed rgba(244, 241, 236, 0.4);
+  border-bottom: 1px dashed rgba(244, 241, 236, 0.4);
+}
+.safe.top    { top: 0;     height: 220px; }
+.safe.bottom { bottom: 0;  height: 380px; }
+
+/* ============================================================
+   HUD (interactive preview only)
+   ============================================================ */
+.hud {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8, 8, 10, 0.85);
+  backdrop-filter: blur(8px);
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(560px, 90vw);
+  z-index: 1000;
+  border: 1px solid rgba(244, 241, 236, 0.08);
+}
+.hud-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.hud-meta { font-size: 12px; opacity: 0.8; gap: 18px; }
+.hud-meta label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.hud button {
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.hud button:hover { background: var(--orange-bright); }
+.hud input[type="range"] { width: 100%; accent-color: var(--orange); }
+
+body.headless .hud { display: none; }
+body.headless .safe-zones { display: none; }
